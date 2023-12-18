@@ -28,8 +28,7 @@ public class Register extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.register, container, false);
-        return view;
+        return inflater.inflate(R.layout.register, container, false);
     }
 
     @Override
@@ -38,6 +37,9 @@ public class Register extends BottomSheetDialogFragment {
         EditText username = view.findViewById(R.id.etUsername);
         EditText password = view.findViewById(R.id.etPassword);
         EditText repassword = view.findViewById(R.id.etRepeatPassword);
+        EditText fullName = view.findViewById(R.id.etFullName); // Added EditText for Full Name
+        EditText roleID = view.findViewById(R.id.etRoleID); // Added EditText for Role ID
+        EditText status = view.findViewById(R.id.etStatus); // Added EditText for Status
         Button daftar = view.findViewById(R.id.btnRegister);
 
         db = new DataBaseHelperLogin(getActivity());
@@ -47,15 +49,19 @@ public class Register extends BottomSheetDialogFragment {
             public void onClick(View view) {
                 String inUsername = username.getText().toString();
                 String inPassword = password.getText().toString();
-                String inrePassword = repassword.getText().toString();
+                String inRePassword = repassword.getText().toString();
+                String inFullName = fullName.getText().toString(); // Get Full Name EditText value
+                String inRoleID = roleID.getText().toString(); // Get Role ID EditText value
+                String inStatus = status.getText().toString(); // Get Status EditText value
 
-                if (!(inrePassword.equals(inPassword))){
+                if (!inRePassword.equals(inPassword)) {
                     repassword.setError("Password Tidak Sama");
-                }else {
-                    Boolean daftar = db.simpanUser(inUsername, inPassword);
-                    if (daftar == true){
+                } else {
+                    // Updated method call to include Full Name, Role ID, and Status parameters
+                    Boolean daftarSuccess = db.simpanUser(inUsername, inPassword, inFullName, inRoleID, inStatus, null);
+                    if (daftarSuccess) {
                         Toast.makeText(getActivity(), "Daftar Berhasil", Toast.LENGTH_LONG).show();
-                    }else {
+                    } else {
                         Toast.makeText(getActivity(), "Daftar Gagal", Toast.LENGTH_LONG).show();
                     }
                     dismiss();
@@ -68,7 +74,7 @@ public class Register extends BottomSheetDialogFragment {
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
         Activity activity = getActivity();
-        if (activity instanceof OnDialogCloseListener){
+        if (activity instanceof OnDialogCloseListener) {
             ((OnDialogCloseListener) activity).onDialogClose(dialog);
         }
     }

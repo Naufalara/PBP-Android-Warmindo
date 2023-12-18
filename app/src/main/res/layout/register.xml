@@ -46,6 +46,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- Existing EditText for Username -->
             <EditText
                 android:id="@+id/etUsername"
                 android:layout_width="match_parent"
@@ -61,6 +62,7 @@
                 android:drawableStart="@drawable/baseline_person_4_24"
                 android:drawablePadding="20dp" />
 
+            <!-- Existing EditText for Password -->
             <EditText
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
@@ -76,6 +78,7 @@
                 android:drawableStart="@drawable/baseline_lock_24"
                 android:drawablePadding="20dp" />
 
+            <!-- New EditText for Repeat Password -->
             <EditText
                 android:id="@+id/etRepeatPassword"
                 android:layout_width="match_parent"
@@ -91,6 +94,51 @@
                 android:drawableStart="@drawable/baseline_lock_24"
                 android:drawablePadding="20dp" />
 
+            <EditText
+                android:id="@+id/etFullName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:hint="Full Name"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:backgroundTint="@color/black"
+                android:padding="28dp"
+                android:drawableStart="@drawable/baseline_supervised_user_circle_24"
+                android:drawablePadding="20dp" />
+
+            <!-- New EditText for Role ID -->
+            <EditText
+                android:id="@+id/etRoleID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:hint="Role"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:backgroundTint="@color/black"
+                android:padding="28dp"
+                android:drawableStart="@drawable/baseline_build_circle_24"
+                android:drawablePadding="20dp" />
+
+            <!-- New EditText for Status -->
+            <EditText
+                android:id="@+id/etStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:hint="Status"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:backgroundTint="@color/black"
+                android:padding="28dp"
+                android:drawableStart="@drawable/baseline_fact_check_24"
+                android:drawablePadding="20dp" />
+
+            <!-- Existing Button for Register -->
             <Button
                 android:id="@+id/btnRegister"
                 android:layout_width="match_parent"
