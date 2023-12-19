@@ -210,5 +210,28 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
             return false;
         }
     }
+    // Method untuk mengambil data pengguna dari tabel Pengguna
+    public Pengguna getDataPengguna() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Pengguna pengguna = null;
+
+        Cursor cursor = db.rawQuery("SELECT * FROM Pengguna", null);
+
+        if (cursor.moveToFirst()) {
+            int idPengguna = cursor.getInt(cursor.getColumnIndex("idpengguna"));
+            String username = cursor.getString(cursor.getColumnIndex("username"));
+            String password = cursor.getString(cursor.getColumnIndex("password"));
+            String namaPengguna = cursor.getString(cursor.getColumnIndex("namapengguna"));
+            String idRole = cursor.getString(cursor.getColumnIndex("idrole"));
+            String status = cursor.getString(cursor.getColumnIndex("status"));
+            byte[] foto = cursor.getBlob(cursor.getColumnIndex("foto"));
+
+            pengguna = new Pengguna(idPengguna, username, password, namaPengguna, idRole, status, foto);
+        }
+
+        cursor.close();
+        return pengguna;
+    }
+
 }
 

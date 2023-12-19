@@ -5,25 +5,70 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
+    tools:context=".MainActivity"
+    android:layout_margin="20dp">
     <Button
         android:id="@+id/btnKeluar"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:background="@drawable/baseline_login_24"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"/>
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/baseline_logout_24" />
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/llDashboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DASHBOARD"
+            android:layout_gravity="center"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LLUserData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="DASHBOARD"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_margin="20dp"/>
+        android:orientation="vertical"
+        android:layout_below="@+id/llDashboard">
+
+        <TextView
+            android:id="@+id/tvNama"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nama : "
+            android:layout_below="@id/llDashboard"
+            android:layout_marginTop="20dp">
+        </TextView>
+        <TextView
+            android:id="@+id/tvRole"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Role : "
+            android:layout_below="@id/llDashboard"
+            android:layout_marginTop="20dp"
+            >
+        </TextView>
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Status : "
+            android:layout_below="@id/llDashboard"
+            android:layout_marginTop="20dp">
+        </TextView>
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Masuk"
+        android:layout_below="@+id/LLUserData"
+        android:layout_marginTop="20dp">
+
+    </Button>
 
 
 </RelativeLayout>
