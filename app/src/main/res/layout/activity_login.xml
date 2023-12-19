@@ -8,12 +8,12 @@
     tools:context=".Login">
 
     <ImageView
+        android:id="@+id/shape"
         android:layout_width="140dp"
-        android:layout_height="130dp"
+        android:layout_height="125dp"
         android:src="@drawable/shape"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:id="@+id/shape" />
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:id="@+id/tvlogin"
@@ -22,7 +22,7 @@
         android:text="Warmindo"
         android:fontFamily="@font/poppinssemibold"
         android:textColor="@color/black"
-        android:layout_marginTop="120dp"
+        android:layout_below="@+id/shape"
         android:layout_centerHorizontal="true"
         android:textSize="35sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -31,11 +31,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        android:id="@+id/logo"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="180dp"
+        android:layout_below="@+id/tvlogin"
         android:src="@drawable/logo"
-        android:id="@+id/logo"
         android:layout_centerHorizontal="true" />
 
     <EditText
@@ -45,14 +45,16 @@
         android:layout_below="@id/logo"
         android:fontFamily="@font/poppinsextralight"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="50dp"
         android:background="@drawable/rounded_background_transparant"
         android:drawableStart="@drawable/baseline_person_4_24"
         android:drawablePadding="15dp"
+        android:drawableTint="@color/grey"
         android:hint="username"
         android:padding="15dp"
-        android:textColorHint="@color/black" />
+        android:textColor="@color/black"
+        android:textColorHint="@color/grey" />
 
     <EditText
         android:id="@+id/etPassword"
@@ -64,12 +66,15 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="50dp"
         android:autofillHints="Password"
+        android:inputType="textPassword"
         android:background="@drawable/rounded_background_transparant"
         android:drawableStart="@drawable/baseline_lock_24"
         android:drawablePadding="20dp"
+        android:drawableTint="@color/grey"
         android:hint="password"
         android:padding="15dp"
-        android:textColorHint="@color/black"/>
+        android:textColor="@color/black"
+        android:textColorHint="@color/grey"/>
 
     <Button
         android:id="@+id/btnLogin"

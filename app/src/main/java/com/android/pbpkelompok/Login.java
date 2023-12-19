@@ -15,15 +15,11 @@ import android.widget.Toast;
 public class Login extends AppCompatActivity {
 
     private EditText etUsername, etPassword;
-
     private DataBaseHelperLogin db;
-
     //shared pref
     public static final String SHARED_PREF_NAME = "myPref";
-
     private SharedPreferences sharedPreferences;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,8 +47,8 @@ public class Login extends AppCompatActivity {
                 String getUsername = etUsername.getText().toString();
                 String getPassword = etPassword.getText().toString();
 
-                if (getPassword.isEmpty() && getPassword.isEmpty()){
-                    Toast.makeText(getApplicationContext(), "Username atau password salah!", Toast.LENGTH_LONG).show();
+                if (getPassword.isEmpty() || getPassword.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Username dan password wajib diisi!", Toast.LENGTH_LONG).show();
                 }else{
                     Boolean masuk = db.checkLogin(getUsername, getPassword);
                     if (masuk == true){
@@ -63,16 +59,15 @@ public class Login extends AppCompatActivity {
 
                             editor.putBoolean("masuk", true);
                             editor.apply();
-                            Intent dashbord = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(dashbord);
+                            Intent dashboard = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(dashboard);
                             finish();
                         }
                     }else{
-                        Toast.makeText(getApplicationContext(), "Gagal Masuk", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Username dan password tidak sesuai", Toast.LENGTH_LONG).show();
                     }
                 }
             }
         });
-
     }
 }

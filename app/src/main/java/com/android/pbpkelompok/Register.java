@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,11 +40,15 @@ public class Register extends BottomSheetDialogFragment {
         EditText password = view.findViewById(R.id.etPassword);
         EditText repassword = view.findViewById(R.id.etRepeatPassword);
         EditText fullName = view.findViewById(R.id.etFullName); // Added EditText for Full Name
-        EditText roleID = view.findViewById(R.id.etRoleID); // Added EditText for Role ID
-        EditText status = view.findViewById(R.id.etStatus); // Added EditText for Status
+        Spinner roleSpinner = view.findViewById(R.id.roleID); // Changed to Spinner
         Button daftar = view.findViewById(R.id.btnRegister);
 
         db = new DataBaseHelperLogin(getActivity());
+
+        // Set up the adapter and options for the roleSpinner
+        ArrayAdapter<String> roleAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, new String[]{"petugas dapur"});
+        roleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        roleSpinner.setAdapter(roleAdapter);
 
         daftar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,8 +57,8 @@ public class Register extends BottomSheetDialogFragment {
                 String inPassword = password.getText().toString();
                 String inRePassword = repassword.getText().toString();
                 String inFullName = fullName.getText().toString(); // Get Full Name EditText value
-                String inRoleID = roleID.getText().toString(); // Get Role ID EditText value
-                String inStatus = status.getText().toString(); // Get Status EditText value
+                String inRoleID = roleSpinner.getSelectedItem().toString(); // Get selected role from Spinner
+                String inStatus = "SomeDefaultValue"; // You can set a default value or remove this line if not needed
 
                 if (!inRePassword.equals(inPassword)) {
                     repassword.setError("Password Tidak Sama");
