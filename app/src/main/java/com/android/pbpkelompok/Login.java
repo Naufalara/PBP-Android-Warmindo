@@ -62,6 +62,7 @@ public class Login extends AppCompatActivity {
                             SharedPreferences.Editor editor = sharedPreferences.edit();
 
                             editor.putBoolean("masuk", true);
+                            editor.putString("username", getUsername);
                             editor.apply();
                             Intent dashbord = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(dashbord);
