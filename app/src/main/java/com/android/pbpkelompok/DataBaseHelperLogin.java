@@ -210,26 +210,34 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
             return false;
         }
     }
-    // Method untuk mengambil data pengguna dari tabel Pengguna
-    public Pengguna getDataPengguna() {
+    public Pengguna getUserByUsername(String username) {
         SQLiteDatabase db = this.getReadableDatabase();
         Pengguna pengguna = null;
 
-        Cursor cursor = db.rawQuery("SELECT * FROM Pengguna", null);
+        // Kolom yang ingin Anda ambil dari tabel Pengguna
+        String[] columns = {"idpengguna", "username", "password", "namapengguna", "idrole", "status", "foto"};
 
-        if (cursor.moveToFirst()) {
+        // Clause WHERE untuk mengambil data berdasarkan username
+        String selection = "username=?";
+        String[] selectionArgs = {username};
+
+        Cursor cursor = db.query("Pengguna", columns, selection, selectionArgs, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            // Ambil data dari cursor dan inisialisasi objek Pengguna
             int idPengguna = cursor.getInt(cursor.getColumnIndex("idpengguna"));
-            String username = cursor.getString(cursor.getColumnIndex("username"));
-            String password = cursor.getString(cursor.getColumnIndex("password"));
             String namaPengguna = cursor.getString(cursor.getColumnIndex("namapengguna"));
+            String password = cursor.getString(cursor.getColumnIndex("password"));
             String idRole = cursor.getString(cursor.getColumnIndex("idrole"));
             String status = cursor.getString(cursor.getColumnIndex("status"));
             byte[] foto = cursor.getBlob(cursor.getColumnIndex("foto"));
 
+            // Inisialisasi objek Pengguna dengan data dari database
             pengguna = new Pengguna(idPengguna, username, password, namaPengguna, idRole, status, foto);
+
+            cursor.close();
         }
 
-        cursor.close();
         return pengguna;
     }
 
