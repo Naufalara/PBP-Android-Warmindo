@@ -58,7 +58,7 @@ public class Register extends BottomSheetDialogFragment {
                 String inRePassword = repassword.getText().toString();
                 String inFullName = fullName.getText().toString(); // Get Full Name EditText value
                 String inRoleID = roleSpinner.getSelectedItem().toString(); // Get selected role from Spinner
-                String inStatus = "SomeDefaultValue"; // You can set a default value or remove this line if not needed
+                String inStatus = "aktif"; // You can set a default value or remove this line if not needed
 
                 if (!inRePassword.equals(inPassword)) {
                     repassword.setError("Password Tidak Sama");
