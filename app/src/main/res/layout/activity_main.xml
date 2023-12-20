@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:text="DASHBOARD"
             android:layout_gravity="center"
+            android:fontFamily="@font/poppinssemibold"
             android:textSize="28sp"
             android:textStyle="bold"
             android:gravity="center"/>
@@ -62,6 +63,7 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/btnMasuk"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Masuk"
