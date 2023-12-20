@@ -20,7 +20,7 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE session (id integer PRIMARY KEY, login text)");
         String createTablePengguna = "CREATE TABLE Pengguna (" +
-                "idpengguna INTEGER PRIMARY KEY," +
+                "idpengguna Text PRIMARY KEY," +
                 "username TEXT," +
                 "password TEXT," +
                 "namapengguna TEXT," +
@@ -28,12 +28,11 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
                 "status TEXT," +
                 "foto BLOB DEFAULT NULL)";
         db.execSQL(createTablePengguna);
+        // Tabel Pengguna
         db.execSQL("INSERT INTO Pengguna(idpengguna, username, password, namapengguna, idrole, status, foto) VALUES " +
-                "(1, 'user1', 'pass1', 'User Satu', 'role1', 'active', null), " +
-                "(2, 'user2', 'pass2', 'User Dua', 'role2', 'active', null), " +
-                "(3, 'user3', 'pass3', 'User Tiga', 'role1', 'inactive', null)");
-
-
+                "('WT1202310X01', 'karyawan1', 'pass1', 'Karyawan Satu', 'E4', 'active', null), " +
+                "('WT1202310X02', 'karyawan2', 'pass2', 'Karyawan Dua', 'E4', 'active', null), " +
+                "('WT1202310X03', 'karyawan3', 'pass3', 'Karyawan Tiga', 'E4', 'inactive', null)");
         // Tabel AktivitasPengguna
         String createTableAktivitasPengguna = "CREATE TABLE AktivitasPengguna (" +
                 "idaktivitas INTEGER PRIMARY KEY," +
@@ -47,45 +46,51 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
                 "(1, '2023-01-01', '09:00', 1, 'Login'), " +
                 "(2, '2023-01-02', '10:30', 2, 'Logout'), " +
                 "(3, '2023-01-03', '11:45', 1, 'Update Profil')");
-
-
         // Tabel Role
         String createTableRole = "CREATE TABLE Role (" +
-                "idrole INTEGER PRIMARY KEY," +
+                "idrole TEXT PRIMARY KEY," +
                 "role TEXT," +
                 "status TEXT)";
         db.execSQL(createTableRole);
         db.execSQL("INSERT INTO Role(idrole, role, status) VALUES " +
-                "(1, 'Admin', 'active'), " +
-                "(2, 'Karyawan', 'active'), " +
-                "(3, 'Pengunjung', 'inactive')");
+                "('E1', 'pemilik', 'aktif'), " +
+                "('E2', 'petugas kasir', 'aktif'), " +
+                "('E3', 'petugas pengantar pesanan', 'aktif'),"+
+                "('E4', 'petugas dapur', 'aktif')");
 
 
         // Tabel Warung
         String createTableWarung = "CREATE TABLE Warung (" +
-                "idwarung INTEGER PRIMARY KEY," +
+                "idwarung Text PRIMARY KEY," +
                 "namawarung TEXT," +
                 "logo BLOB," +
                 "gambar BLOB)";
         db.execSQL(createTableWarung);
         db.execSQL("INSERT INTO Warung(idwarung, namawarung, logo, gambar) VALUES " +
-                "(1, 'Warung A', null, null), " +
-                "(2, 'Warung B', null, null), " +
-                "(3, 'Warung C', null, null)");
-
+                "('WT1', 'Warung A', null, null), " +
+                "('WT2', 'Warung B', null, null), " +
+                "('WT3', 'Warung C', null, null), " +
+                "('WT4', 'Warung D', null, null), " +
+                "('WT5', 'Warung E', null, null)");
 
         // Tabel Meja
         String createTableMeja = "CREATE TABLE Meja (" +
                 "idmeja INTEGER PRIMARY KEY," +
-                "idwarung INTEGER," +
+                "idwarung TEXT," +
                 "kodemeja TEXT," +
                 "FOREIGN KEY(idwarung) REFERENCES Warung(idwarung))";
         db.execSQL(createTableMeja);
         db.execSQL("INSERT INTO Meja(idmeja, idwarung, kodemeja) VALUES " +
-                "(1, 1, 'A001'), " +
-                "(2, 1, 'A002'), " +
-                "(3, 2, 'B001')");
-
+                "(1, 'WT1', 'A1'), " +
+                "(2, 'WT1', 'A2'), " +
+                "(3, 'WT1', 'A3'), " +
+                "(4, 'WT5', 'A4'), " +
+                "(5, 'WT5', 'A5'), " +
+                "(6, 'WT5', 'B1'), " +
+                "(7, 'WT3', 'B2'), " +
+                "(8, 'WT3', 'B3'), " +
+                "(9, 'WT3', 'B4'), " +
+                "(10, 'WT3', 'B5')");
 
         // Tabel Menu
         String createTableMenu = "CREATE TABLE Menu (" +
@@ -103,11 +108,11 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
 
         // Tabel Transaksi
         String createTableTransaksi = "CREATE TABLE Transaksi (" +
-                "idtransaksi INTEGER PRIMARY KEY," +
+                "idtransaksi TEXT PRIMARY KEY," +
                 "tanggal TEXT," +
                 "waktu TEXT," +
                 "shift INTEGER," +
-                "idpengguna INTEGER," +
+                "idpengguna TEXT," +
                 "idpelanggan INTEGER," +
                 "status TEXT," +
                 "kodemeja TEXT," +
@@ -122,14 +127,13 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
         db.execSQL(createTableTransaksi);
         db.execSQL("INSERT INTO Transaksi(idtransaksi, tanggal, waktu, shift, idpengguna, idpelanggan, status, kodemeja, " +
                 "namapelanggan, total, metodepembayaran, totaldiskon, idpromosi) VALUES " +
-                "(1, '2023-01-01', '12:00', 1, 1, 1, 'completed', 'A001', 'Pelanggan A', 50.0, 'cash', 5.0, 1), " +
-                "(2, '2023-01-02', '14:30', 2, 2, 2, 'completed', 'A002', 'Pelanggan B', 30.0, 'card', 0.0, null), " +
-                "(3, '2023-01-03', '11:45', 1, 1, 3, 'pending', 'B001', 'Pelanggan C', 70.0, 'cash', 10.0, 2)");
-
+                "('WT120231201270001', '2023-12-27', '12:00', 1, 'WT1202310X01', 1, 'completed', 'A001', 'Pelanggan A', 50.0, 'cash', 5.0, 1), " +
+                "('WT120231201271002', '2023-12-27', '14:30', 2, 'WT1202310X02', 2, 'completed', 'A002', 'Pelanggan B', 30.0, 'card', 0.0, null), " +
+                "('WT120231201272003', '2023-12-27', '11:45', 1, 'WT1202310X01', 3, 'pending', 'B001', 'Pelanggan C', 70.0, 'cash', 10.0, 2)");
 
         // Tabel DetailTransaksi
         String createTableDetailTransaksi = "CREATE TABLE DetailTransaksi (" +
-                "idtransaksi INTEGER," +
+                "idtransaksi TEXT," +
                 "idmenu INTEGER," +
                 "namamenu TEXT," +
                 "harga REAL," +
@@ -141,11 +145,9 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
                 "FOREIGN KEY(idmenu) REFERENCES Menu(idmenu))";
         db.execSQL(createTableDetailTransaksi);
         db.execSQL("INSERT INTO DetailTransaksi(idtransaksi, idmenu, namamenu, harga, jumlah, subtotal, status) VALUES " +
-                "(1, 2, 'Menu B', 10.0, 3, 30.0, 'completed'), " +
-                "(2, 1, 'Menu A', 20.0, 1, 20.0, 'completed'), " +
-                "(3, 3, 'Menu C', 25.0, 2, 50.0, 'pending')");
-
-
+                "('WT120231201270001', 2, 'Menu B', 10.0, 3, 30.0, 'completed'), " +
+                "('WT120231201271002', 1, 'Menu A', 20.0, 1, 20.0, 'completed'), " +
+                "('WT120231201272003', 3, 'Menu C', 25.0, 2, 50.0, 'pending')");
         // Tabel Pelanggan
         String createTablePelanggan = "CREATE TABLE Pelanggan (" +
                 "idpelanggan INTEGER PRIMARY KEY," +
@@ -156,9 +158,9 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
                 "status TEXT)";
         db.execSQL(createTablePelanggan);
         db.execSQL("INSERT INTO Pelanggan(idpelanggan, namapelanggan, tanggaldaftar, waktudaftar, poin, status) VALUES " +
-                "(1, 'Pelanggan A', '2023-01-01', '09:00', 100, 'active'), " +
-                "(2, 'Pelanggan B', '2023-01-02', '10:30', 50, 'active'), " +
-                "(3, 'Pelanggan C', '2023-01-03', '11:45', 75, 'inactive')");
+                "(1, 'Pelanggan A', '2023-01-01', '09:00', 100, 'aktif'), " +
+                "(2, 'Pelanggan B', '2023-01-02', '10:30', 50, 'aktif'), " +
+                "(3, 'Pelanggan C', '2023-01-03', '11:45', 75, 'aktif')");
 
 
         // Tabel PoinTransaksi
@@ -282,7 +284,7 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
 
         if (cursor != null && cursor.moveToFirst()) {
             // Ambil data dari cursor dan inisialisasi objek Pengguna
-            int idPengguna = cursor.getInt(cursor.getColumnIndex("idpengguna"));
+            String idpengguna = cursor.getString(cursor.getColumnIndex("idpengguna"));
             String namaPengguna = cursor.getString(cursor.getColumnIndex("namapengguna"));
             String password = cursor.getString(cursor.getColumnIndex("password"));
             String idRole = cursor.getString(cursor.getColumnIndex("idrole"));
@@ -290,7 +292,7 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
             byte[] foto = cursor.getBlob(cursor.getColumnIndex("foto"));
 
             // Inisialisasi objek Pengguna dengan data dari database
-            pengguna = new Pengguna(idPengguna, username, password, namaPengguna, idRole, status, foto);
+            pengguna = new Pengguna(idpengguna, username, password, namaPengguna, idRole, status, foto);
 
             cursor.close();
         }
@@ -315,5 +317,23 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
             }
         }
     }
+    public String getRoleNameById(String idRole) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String roleName = null;
+
+        String[] columns = {"role"};
+        String selection = "idrole=?";
+        String[] selectionArgs = {idRole};
+
+        Cursor cursor = db.query("Role", columns, selection, selectionArgs, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            roleName = cursor.getString(cursor.getColumnIndex("role"));
+            cursor.close();
+        }
+
+        return roleName;
+    }
+
 }
 
