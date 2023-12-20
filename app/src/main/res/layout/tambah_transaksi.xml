@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="20dp">
+   <TextView
+       android:id="@+id/tvTambahTransaksi"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:text="Tambah Transaksi"
+       android:gravity="center"
+       android:textSize="30sp"
+       android:fontFamily="@font/poppinssemibold"/>
+
+
+    <!-- Contoh elemen UI lainnya: Waktu, Total, Detail Transaksi, dll -->
+
+
+
+</RelativeLayout>
