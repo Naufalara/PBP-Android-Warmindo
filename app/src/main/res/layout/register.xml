@@ -1,41 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/background">
+    android:background="@color/secondaryPrimary">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/logo"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="25dp">
+        </ImageView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Warmindo"
+            android:fontFamily="@font/poppinssemibold"
+            android:textSize="40sp"
+            android:textColor="@color/white"
+            android:gravity="center_vertical">
+        </TextView>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"
-                android:text="@string/register"
-                android:textColor="@color/white"
-                android:textSize="40sp"
-                android:textStyle="bold"
-                android:gravity="center">
-            </TextView>
-
-        </RelativeLayout>
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-170dp"
+        android:layout_marginTop="140dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         app:cardCornerRadius="20dp"
@@ -46,7 +48,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Existing EditText for Username -->
             <EditText
                 android:id="@+id/etUsername"
                 android:layout_width="match_parent"
@@ -56,13 +57,14 @@
                 android:layout_marginTop="20dp"
                 android:hint="@string/username"
                 android:textColor="@color/black"
-                android:textColorHint="@color/black"
-                android:backgroundTint="@color/black"
+                android:textColorHint="@color/grey"
+                android:backgroundTint="@color/grey"
                 android:padding="28dp"
                 android:drawableStart="@drawable/baseline_person_4_24"
-                android:drawablePadding="20dp" />
+                android:drawablePadding="20dp"
+                android:drawableTint="@color/grey"/>
 
-            <!-- Existing EditText for Password -->
+            <!-- EditText Password -->
             <EditText
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
@@ -72,13 +74,14 @@
                 android:hint="@string/password"
                 android:inputType="textPassword"
                 android:textColor="@color/black"
-                android:textColorHint="@color/black"
-                android:backgroundTint="@color/black"
+                android:textColorHint="@color/grey"
+                android:backgroundTint="@color/grey"
                 android:padding="28dp"
                 android:drawableStart="@drawable/baseline_lock_24"
-                android:drawablePadding="20dp" />
+                android:drawablePadding="20dp"
+                android:drawableTint="@color/grey"/>
 
-            <!-- New EditText for Repeat Password -->
+            <!-- EditText Repeat Password -->
             <EditText
                 android:id="@+id/etRepeatPassword"
                 android:layout_width="match_parent"
@@ -86,13 +89,14 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:inputType="textPassword"
-                android:hint="@string/ulangi_password"
+                android:hint="Ulangi Password"
                 android:textColor="@color/black"
-                android:textColorHint="@color/black"
-                android:backgroundTint="@color/black"
+                android:textColorHint="@color/grey"
+                android:backgroundTint="@color/grey"
                 android:padding="28dp"
                 android:drawableStart="@drawable/baseline_lock_24"
-                android:drawablePadding="20dp" />
+                android:drawablePadding="20dp"
+                android:drawableTint="@color/grey"/>
 
             <EditText
                 android:id="@+id/etFullName"
@@ -100,43 +104,49 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:hint="Full Name"
+                android:hint="Nama Lengkap"
                 android:textColor="@color/black"
-                android:textColorHint="@color/black"
-                android:backgroundTint="@color/black"
+                android:textColorHint="@color/grey"
+                android:backgroundTint="@color/grey"
                 android:padding="28dp"
                 android:drawableStart="@drawable/baseline_supervised_user_circle_24"
-                android:drawablePadding="20dp" />
+                android:drawablePadding="20dp"
+                android:drawableTint="@color/grey"/>
 
-            <!-- New EditText for Role ID -->
-            <EditText
-                android:id="@+id/etRoleID"
+            <!-- Spinner Role ID -->
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:hint="Role"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black"
-                android:backgroundTint="@color/black"
-                android:padding="28dp"
-                android:drawableStart="@drawable/baseline_build_circle_24"
-                android:drawablePadding="20dp" />
+                android:gravity="center_vertical"
+                android:paddingLeft="28dp"
+                android:paddingTop="28dp"
+                android:paddingBottom="28dp">
 
-            <!-- New EditText for Status -->
-            <EditText
-                android:id="@+id/etStatus"
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/baseline_build_circle_24"
+                    android:layout_marginRight="20dp"
+                    android:backgroundTint="@color/grey"/>
+
+                <Spinner
+                    android:id="@+id/roleID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown" />
+            </LinearLayout>
+
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/grey"
                 android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:hint="Status"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black"
-                android:backgroundTint="@color/black"
-                android:padding="28dp"
-                android:drawableStart="@drawable/baseline_fact_check_24"
-                android:drawablePadding="20dp" />
+                android:layout_marginEnd="20dp"/>
 
             <!-- Existing Button for Register -->
             <Button
@@ -151,10 +161,10 @@
                 android:text="@string/daftar"
                 android:textSize="14sp"
                 android:textColor="@color/white"
-                android:backgroundTint="@color/black" />
+                android:backgroundTint="@color/primary" />
 
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
-</LinearLayout>
+</RelativeLayout>
