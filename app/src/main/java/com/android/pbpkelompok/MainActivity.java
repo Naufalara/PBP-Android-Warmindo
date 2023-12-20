@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnKeluar;
+    private Button btnKeluar,btnMasuk;
     private TextView tvNama,tvRole,tvStatus;
 
     private DataBaseHelperLogin db;
@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         tvNama = findViewById(R.id.tvNama);
         tvStatus = findViewById(R.id.tvStatus);
         tvRole = findViewById(R.id.tvRole);
+        btnMasuk = findViewById(R.id.btnMasuk);
 
         db = new DataBaseHelperLogin(this);
         sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(pengguna != null){
             tvNama.setText("Nama: " + pengguna.getNamaPengguna());
-            tvRole.setText("Id Role: " + pengguna.getIdRole());
+            tvRole.setText("Role: " + pengguna.getIdRole());
             tvStatus.setText("Status: "+ pengguna.getStatus());
         }
 
@@ -70,5 +71,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnMasuk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent masuk_transaksi = new Intent(getApplicationContext(),TransaksiActivity.class);
+                startActivity(masuk_transaksi);
+                finish();
+            }
+        });
     }
 }
