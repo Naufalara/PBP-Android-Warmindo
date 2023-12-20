@@ -210,6 +210,26 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
             return false;
         }
     }
+
+    public boolean checkUsername(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+
+        try {
+            // Query untuk mencari username di tabel Pengguna
+            String query = "SELECT * FROM Pengguna WHERE username=?";
+            cursor = db.rawQuery(query, new String[]{username});
+
+            // Jika cursor memiliki data, berarti username sudah ada
+            return cursor.getCount() > 0;
+        } finally {
+            // Pastikan cursor ditutup untuk menghindari memory leaks
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
     public Pengguna getUserByUsername(String username) {
         SQLiteDatabase db = this.getReadableDatabase();
         Pengguna pengguna = null;

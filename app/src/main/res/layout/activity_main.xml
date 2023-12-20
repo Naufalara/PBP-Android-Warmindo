@@ -7,11 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:layout_margin="20dp">
+
     <Button
         android:id="@+id/btnKeluar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/baseline_logout_24" />
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="8dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/baseline_logout_24"
+        android:backgroundTint="@color/grey"/>
 
     <LinearLayout
         android:id="@+id/llDashboard"
@@ -23,8 +27,8 @@
             android:text="DASHBOARD"
             android:layout_gravity="center"
             android:fontFamily="@font/poppinssemibold"
-            android:textSize="28sp"
-            android:textStyle="bold"
+            android:textSize="25sp"
+            android:textColor="@color/primary"
             android:gravity="center"/>
     </LinearLayout>
 
@@ -49,8 +53,7 @@
             android:layout_height="wrap_content"
             android:text="Role : "
             android:layout_below="@id/llDashboard"
-            android:layout_marginTop="20dp"
-            >
+            android:layout_marginTop="20dp">
         </TextView>
         <TextView
             android:id="@+id/tvStatus"
@@ -68,9 +71,9 @@
         android:layout_height="wrap_content"
         android:text="Masuk"
         android:layout_below="@+id/LLUserData"
-        android:layout_marginTop="20dp">
-
+        android:layout_marginTop="30dp"
+        android:background="@drawable/rounded_background_orange"
+        android:textColor="@color/white">
     </Button>
-
 
 </RelativeLayout>
