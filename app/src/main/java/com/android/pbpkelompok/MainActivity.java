@@ -39,11 +39,11 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
         String usernamefrompref = sharedPreferences.getString("username","default");
         Pengguna pengguna = db.getUserByUsername(usernamefrompref);
-
-        if(pengguna != null){
+        if (pengguna != null) {
             tvNama.setText("Nama: " + pengguna.getNamaPengguna());
-            tvRole.setText("Role: " + pengguna.getIdRole());
-            tvStatus.setText("Status: "+ pengguna.getStatus());
+            String roleName = db.getRoleNameById(pengguna.getIdRole());
+            tvRole.setText("Role: " + roleName);
+            tvStatus.setText("Status: " + pengguna.getStatus());
         }
 
         Boolean checksession = db.checkSession("ada");

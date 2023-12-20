@@ -1,7 +1,7 @@
 package com.android.pbpkelompok;
 
 public class Pengguna {
-    private int idPengguna;
+    private String  idpengguna;
     private String username;
     private String password;
     private String namaPengguna;
@@ -10,8 +10,8 @@ public class Pengguna {
     private byte[] foto;
 
     // Konstruktor untuk kelas Pengguna
-    public Pengguna(int idPengguna, String username, String password, String namaPengguna, String idRole, String status, byte[] foto) {
-        this.idPengguna = idPengguna;
+    public Pengguna(String idpengguna, String username, String password, String namaPengguna, String idRole, String status, byte[] foto) {
+        this.idpengguna = idpengguna;
         this.username = username;
         this.password = password;
         this.namaPengguna = namaPengguna;
@@ -21,12 +21,12 @@ public class Pengguna {
     }
 
     // Getter dan setter untuk setiap atribut Pengguna
-    public int getIdPengguna() {
-        return idPengguna;
+    public String getIdPengguna() {
+        return idpengguna;
     }
 
     public void setIdPengguna(int idPengguna) {
-        this.idPengguna = idPengguna;
+        this.idpengguna = idpengguna;
     }
 
     public String getUsername() {

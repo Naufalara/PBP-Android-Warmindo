@@ -31,6 +31,8 @@ public class TransaksiActivity extends AppCompatActivity {
 
         dbHelper = new DataBaseHelperLogin(this);
         sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+        String usernamefrompref = sharedPreferences.getString("username","default");
+        Pengguna pengguna = dbHelper.getUserByUsername(usernamefrompref);
 
         // Inisialisasi elemen UI
         btnTambahTransaksi = findViewById(R.id.btnTambahTransaksi);
@@ -42,7 +44,7 @@ public class TransaksiActivity extends AppCompatActivity {
         transaksiList = new ArrayList<>();
 
         // Ambil data transaksi dari basis data
-        Cursor cursorTransaksi = dbHelper.getReadableDatabase().rawQuery("SELECT * FROM Transaksi", null);
+        Cursor cursorTransaksi = dbHelper.getReadableDatabase().rawQuery("SELECT * FROM Transaksi WHERE idpengguna=?", new String[]{String.valueOf(pengguna.getIdPengguna())});
         if (cursorTransaksi.moveToFirst()) {
             do {
                 // Ambil informasi transaksi
@@ -77,9 +79,6 @@ public class TransaksiActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, transaksiList);
         listTransaksi.setAdapter(adapter);
 
-        // Aksi saat tombol tambah transaksi diklik
-        btnTambahTransaksi.setOnClickListener(v -> tambahTransaksi());
-
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,11 +104,5 @@ public class TransaksiActivity extends AppCompatActivity {
                 finish();
             }
         });
-    }
-
-    // Metode untuk menambahkan transaksi baru
-    private void tambahTransaksi() {
-        // Implementasikan logika untuk menambah transaksi baru
-        // Misalnya, tampilkan dialog, buka aktivitas baru, atau lakukan aksi sesuai kebutuhan
     }
 }

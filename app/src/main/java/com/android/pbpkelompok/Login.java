@@ -47,7 +47,7 @@ public class Login extends AppCompatActivity {
                 String getUsername = etUsername.getText().toString();
                 String getPassword = etPassword.getText().toString();
 
-                if (getPassword.isEmpty() || getPassword.isEmpty()){
+                if (getUsername.isEmpty() || getPassword.isEmpty()){
                     Toast.makeText(getApplicationContext(), "Username dan password wajib diisi!", Toast.LENGTH_LONG).show();
                 }else{
                     Boolean masuk = db.checkLogin(getUsername, getPassword);
