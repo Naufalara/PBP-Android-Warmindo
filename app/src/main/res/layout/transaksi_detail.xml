@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="20dp">
+
+    <!-- Daftar rekap pesanan -->
+    <LinearLayout
+        android:id="@+id/llTransaksiDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <Button
+            android:id="@+id/btnKembali_Transaksi"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_weight="0"
+            android:background="@drawable/baseline_keyboard_backspace_24"
+            android:backgroundTint="@color/grey"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DETAIL TRANSAKSI"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:fontFamily="@font/poppinssemibold"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:gravity="center"/>
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_weight="0"
+            android:background="@drawable/baseline_logout_24"
+            android:backgroundTint="@color/grey"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvRekap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pesanan"
+        android:textSize="28dp"
+        android:layout_below="@+id/llTransaksiDetail">
+
+    </TextView>
+    <ListView
+        android:id="@+id/listRekapPesanan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp"
+        android:layout_below="@+id/tvRekap"/>
+
+    <!-- Informasi status -->
+    <TextView
+        android:id="@+id/textStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/listRekapPesanan"
+        android:layout_marginTop="16dp"
+        android:text="Status: "
+        android:textStyle="bold" />
+
+    <!-- Tombol ubah status -->
+    <Button
+        android:id="@+id/btnUbahStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textStatus"
+        android:layout_marginTop="8dp"
+        android:text="Ubah Status" />
+
+    <!-- Pilihan pembayaran -->
+    <Spinner
+        android:id="@+id/spinnerMetodePembayaran"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnUbahStatus"
+        android:layout_marginTop="16dp" />
+
+    <!-- Tombol selesaikan pesanan -->
+    <Button
+        android:id="@+id/btnSelesaikanPesanan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinnerMetodePembayaran"
+        android:layout_marginTop="16dp"
+        android:text="Selesaikan Pesanan" />
+
+</RelativeLayout>
