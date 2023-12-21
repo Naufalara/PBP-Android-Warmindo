@@ -26,7 +26,7 @@
             android:layout_gravity="center"
             android:fontFamily="@font/poppinssemibold"
             android:textSize="28sp"
-            android:textStyle="bold"
+            android:textColor="@color/primary"
             android:gravity="center"/>
         <Button
             android:id="@+id/btnLogout"
@@ -43,14 +43,16 @@
         android:layout_height="wrap_content"
         android:text="Pesanan"
         android:textSize="28dp"
-        android:layout_below="@+id/llTransaksiDetail">
-
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/llTransaksiDetail"
+        android:fontFamily="@font/poppinsextralight">
     </TextView>
+
     <ListView
         android:id="@+id/listRekapPesanan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:divider="@android:color/darker_gray"
         android:dividerHeight="1dp"
         android:layout_below="@+id/tvRekap"/>
@@ -60,35 +62,69 @@
         android:id="@+id/textStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/listRekapPesanan"
-        android:layout_marginTop="16dp"
-        android:text="Status: "
-        android:textStyle="bold" />
+        android:layout_below="@+id/listRekapPesanan"
+        android:layout_marginTop="10dp"
+        android:text="Status Transaksi"
+        android:fontFamily="@font/poppinsregular" />
 
     <!-- Tombol ubah status -->
-    <Button
-        android:id="@+id/btnUbahStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textStatus"
-        android:layout_marginTop="8dp"
-        android:text="Ubah Status" />
-
-    <!-- Pilihan pembayaran -->
-    <Spinner
-        android:id="@+id/spinnerMetodePembayaran"
+    <LinearLayout
+        android:id="@+id/layoutStatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btnUbahStatus"
-        android:layout_marginTop="16dp" />
+        android:layout_below="@id/textStatus"
+        android:background="@drawable/rounded_background">
+        <Spinner
+            android:id="@+id/spinnerUbahStatus"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp" />
+    </LinearLayout>
+
+    <!-- Tombol ubah status pesanan -->
+    <Button
+        android:id="@+id/btnUbahStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutStatus"
+        android:layout_marginTop="16dp"
+        android:text="Ubah Status Transaksi"
+        android:textColor="@color/white"
+        android:background="@drawable/rounded_background_orange"/>
+
+    <!-- Pilihan pembayaran -->
+    <TextView
+        android:id="@+id/textPembayaran"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnUbahStatus"
+        android:layout_marginTop="10dp"
+        android:text="Pembayaran"
+        android:textStyle="bold"
+        android:fontFamily="@font/poppinsregular"/>
+    <LinearLayout
+        android:id="@+id/layoutPembayaran"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textPembayaran"
+        android:background="@drawable/rounded_background">
+
+        <Spinner
+            android:id="@+id/spinnerMetodePembayaran"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp" />
+    </LinearLayout>
 
     <!-- Tombol selesaikan pesanan -->
     <Button
         android:id="@+id/btnSelesaikanPesanan"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/spinnerMetodePembayaran"
+        android:layout_below="@id/layoutPembayaran"
         android:layout_marginTop="16dp"
-        android:text="Selesaikan Pesanan" />
+        android:text="Selesaikan Pesanan"
+        android:textColor="@color/white"
+        android:background="@drawable/rounded_background_orange"/>
 
 </RelativeLayout>

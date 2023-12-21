@@ -58,8 +58,6 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
                 "('E2', 'petugas kasir', 'aktif'), " +
                 "('E3', 'petugas pengantar pesanan', 'aktif'),"+
                 "('E4', 'petugas dapur', 'aktif')");
-
-
         // Tabel Warung
         String createTableWarung = "CREATE TABLE Warung (" +
                 "idwarung Text PRIMARY KEY," +
@@ -128,9 +126,9 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
         db.execSQL(createTableTransaksi);
         db.execSQL("INSERT INTO Transaksi(idtransaksi, tanggal, waktu, shift, idpengguna, idpelanggan, status, kodemeja, " +
                 "namapelanggan, total, metodepembayaran, totaldiskon, idpromosi) VALUES " +
-                "('WT120231201270001', '2023-12-21', '12:00', 1, 'WT1202310X01', 1, 'aktif', 'A001', 'Pelanggan A', 50.0, 'cash', 5.0, 1), " +
-                "('WT120231201271002', '2023-12-21', '14:30', 2, 'WT1202310X02', 2, 'aktif', 'A002', 'Pelanggan B', 30.0, 'kartu debit', 0.0, null), " +
-                "('WT120231201272003', '2023-12-21', '11:45', 0, 'WT1202310X01', 3, 'batal', 'B001', 'Pelanggan C', 70.0, 'qris', 10.0, 2)");
+                "('WT120231201211001', '2023-12-21', '18:00', 1, 'WT1202310X01', 1, 'diproses', 'A001', 'Pelanggan A', 30.0, 'cash', 5.0, 1), " +
+                "('WT120231201211002', '2023-12-21', '17:30', 1, 'WT1202310X02', 2, 'baru', 'A002', 'Pelanggan B', 20.0, 'kartu debit', 0.0, null), " +
+                "('WT120231201211003', '2023-12-21', '18:45', 1, 'WT1202310X01', 3, 'disajikan', 'B001', 'Pelanggan C', 50.0, 'qris', 10.0, 2)");
 
         // Tabel DetailTransaksi
         String createTableDetailTransaksi = "CREATE TABLE DetailTransaksi (" +
@@ -146,9 +144,9 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
                 "FOREIGN KEY(idmenu) REFERENCES Menu(idmenu))";
         db.execSQL(createTableDetailTransaksi);
         db.execSQL("INSERT INTO DetailTransaksi(idtransaksi, idmenu, namamenu, harga, jumlah, subtotal, status) VALUES " +
-                "('WT120231201270001', 2, 'Menu B', 10.0, 3, 30.0, 'aktif'), " +
-                "('WT120231201271002', 1, 'Menu A', 20.0, 1, 20.0, 'aktif'), " +
-                "('WT120231201272003', 3, 'Menu C', 25.0, 2, 50.0, 'batal')");
+                "('WT120231201211001', 2, 'Menu B', 10.0, 3, 30.0, 'aktif'), " +
+                "('WT120231201211002', 1, 'Menu A', 20.0, 1, 20.0, 'aktif'), " +
+                "('WT120231201211003', 3, 'Menu C', 25.0, 2, 50.0, 'batal')");
         // Tabel Pelanggan
         String createTablePelanggan = "CREATE TABLE Pelanggan (" +
                 "idpelanggan INTEGER PRIMARY KEY," +
@@ -385,32 +383,29 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
         cursor.close();
         return count;
     }
-    public void updateTransactionStatus(String idTransaksi, String newStatus) {
-        SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put("status", newStatus);
+    public void updateStatusTransaksi(String transactionId, String newStatus) {
+        if (transactionId != null && !transactionId.isEmpty() && newStatus != null && !newStatus.isEmpty()) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put("status", newStatus);
 
-        // Lakukan pembaruan status berdasarkan id transaksi yang diberikan
-        int rowsAffected = db.update("DetailTransaksi", values, "idtransaksi=?", new String[]{idTransaksi});
-
-        // Cek jika pembaruan berhasil atau tidak
-        if (rowsAffected > 0) {
-            // Jika berhasil
-            Log.d("DataBaseHelper", "Status transaksi dengan ID " + idTransaksi + " berhasil diubah menjadi " + newStatus);
-        } else {
-            // Jika gagal
-            Log.e("DataBaseHelper", "Gagal mengubah status transaksi dengan ID " + idTransaksi);
+            // Update kolom 'status' di tabel Transaksi sesuai dengan id transaksi
+            db.update("Transaksi", values, "idtransaksi=?", new String[]{transactionId});
         }
     }
-    public void updateTransactionPaymentMethod(String transactionId, String newPaymentMethod) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("metodepembayaran", newPaymentMethod);
 
-        // Update kolom 'metodepembayaran' di tabel Transaksi sesuai dengan id transaksi
-        db.update("Transaksi", values, "idtransaksi=?", new String[]{transactionId});
+    public void updateMetodePembayaranDanStatus(String transactionId, String newPaymentMethod, String newStatus) {
+        if (transactionId != null && !transactionId.isEmpty() && newPaymentMethod != null && !newPaymentMethod.isEmpty()
+                && newStatus != null && !newStatus.isEmpty()) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put("metodepembayaran", newPaymentMethod);
+            values.put("status", newStatus);
 
+            // Update kolom 'metodepembayaran' dan 'status' di tabel Transaksi sesuai dengan id transaksi
+            db.update("Transaksi", values, "idtransaksi=?", new String[]{transactionId});
+        }
     }
 }
 
