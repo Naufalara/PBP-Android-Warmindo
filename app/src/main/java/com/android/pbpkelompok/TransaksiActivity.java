@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class TransaksiActivity extends AppCompatActivity {
 
-    private Button btnTambahTransaksi,btnKembali_Dashboard,btnLogout;
+    private Button btnTambahTransaksi, btnKembali_Dashboard, btnLogout;
     private ListView listTransaksi;
     private ArrayAdapter<String> adapter;
     private ArrayList<String> transaksiList;
@@ -31,51 +31,43 @@ public class TransaksiActivity extends AppCompatActivity {
 
         dbHelper = new DataBaseHelperLogin(this);
         sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
-        String usernamefrompref = sharedPreferences.getString("username","default");
-        Pengguna pengguna = dbHelper.getUserByUsername(usernamefrompref);
 
-        // Inisialisasi elemen UI
+        int shift = getIntent().getIntExtra("shift", 0);
+        String tanggal = getIntent().getStringExtra("tanggal");
+
         btnTambahTransaksi = findViewById(R.id.btnTambahTransaksi);
         btnLogout = findViewById(R.id.btnLogout);
         btnKembali_Dashboard = findViewById(R.id.btnKembali_Dashboard);
         listTransaksi = findViewById(R.id.listTransaksi);
 
-        // Inisialisasi daftar transaksi dari database
         transaksiList = new ArrayList<>();
 
-        // Ambil data transaksi dari basis data
-        Cursor cursorTransaksi = dbHelper.getReadableDatabase().rawQuery("SELECT * FROM Transaksi WHERE idpengguna=?", new String[]{String.valueOf(pengguna.getIdPengguna())});
+        Cursor cursorTransaksi = dbHelper.getReadableDatabase().rawQuery("SELECT * FROM Transaksi WHERE tanggal=? AND shift=" + shift, new String[]{tanggal});
+
         if (cursorTransaksi.moveToFirst()) {
             do {
-                // Ambil informasi transaksi
-                int idTransaksi = cursorTransaksi.getInt(cursorTransaksi.getColumnIndex("idtransaksi"));
-                String tanggal = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("tanggal"));
+                String idTransaksi = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("idtransaksi"));
                 String waktu = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("waktu"));
                 double total = cursorTransaksi.getDouble(cursorTransaksi.getColumnIndex("total"));
 
-                // Dapatkan detail transaksi
                 Cursor cursorDetail = dbHelper.getReadableDatabase().rawQuery("SELECT * FROM DetailTransaksi WHERE idtransaksi=?", new String[]{String.valueOf(idTransaksi)});
                 StringBuilder detailTransaksi = new StringBuilder();
                 if (cursorDetail.moveToFirst()) {
                     do {
-                        // Ambil informasi detail transaksi
                         String namaMenu = cursorDetail.getString(cursorDetail.getColumnIndex("namamenu"));
                         int jumlah = cursorDetail.getInt(cursorDetail.getColumnIndex("jumlah"));
 
-                        // Tambahkan informasi detail ke dalam StringBuilder
                         detailTransaksi.append(namaMenu).append(" (").append(jumlah).append("), ");
                     } while (cursorDetail.moveToNext());
                 }
                 cursorDetail.close();
 
-                // Buat string yang berisi informasi transaksi beserta detailnya
-                String transaksi = "ID: " + idTransaksi + ", Tanggal: " + tanggal + ", Waktu: " + waktu + ", Total: " + total + "\nDetail: " + detailTransaksi.toString();
+                String transaksi = "ID: " + idTransaksi + ", Waktu: " + waktu + ", Total: " + total + "\nDetail: " + detailTransaksi.toString();
                 transaksiList.add(transaksi);
             } while (cursorTransaksi.moveToNext());
         }
         cursorTransaksi.close();
 
-        // Inisialisasi adapter untuk ListView
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, transaksiList);
         listTransaksi.setAdapter(adapter);
 
@@ -83,7 +75,7 @@ public class TransaksiActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Boolean updateSeesion = dbHelper.upgradeSession("kosong", 1);
-                if (updateSeesion == true){
+                if (updateSeesion == true) {
                     Toast.makeText(getApplicationContext(), "Berhasil Keluar", Toast.LENGTH_LONG).show();
 
                     SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -96,6 +88,7 @@ public class TransaksiActivity extends AppCompatActivity {
                 }
             }
         });
+
         btnKembali_Dashboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,3 +99,4 @@ public class TransaksiActivity extends AppCompatActivity {
         });
     }
 }
+
