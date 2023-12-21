@@ -50,7 +50,7 @@ public class TransaksiActivity extends AppCompatActivity {
 
                 // Ambil informasi transaksi
                 String idTransaksi = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("idtransaksi"));
-                String tanggal = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("tanggal"));
+                String tanggaltransaksi = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("tanggal"));
                 String waktu = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("waktu"));
                 double total = cursorTransaksi.getDouble(cursorTransaksi.getColumnIndex("total"));
                 String metodepembayaran = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("metodepembayaran"));
