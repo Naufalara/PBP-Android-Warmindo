@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -48,10 +49,11 @@ public class TransaksiActivity extends AppCompatActivity {
         if (cursorTransaksi.moveToFirst()) {
             do {
                 // Ambil informasi transaksi
-                int idTransaksi = cursorTransaksi.getInt(cursorTransaksi.getColumnIndex("idtransaksi"));
+                String idTransaksi = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("idtransaksi"));
                 String tanggal = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("tanggal"));
                 String waktu = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("waktu"));
                 double total = cursorTransaksi.getDouble(cursorTransaksi.getColumnIndex("total"));
+                String metodepembayaran = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("metodepembayaran"));
 
                 // Dapatkan detail transaksi
                 Cursor cursorDetail = dbHelper.getReadableDatabase().rawQuery("SELECT * FROM DetailTransaksi WHERE idtransaksi=?", new String[]{String.valueOf(idTransaksi)});
@@ -69,7 +71,7 @@ public class TransaksiActivity extends AppCompatActivity {
                 cursorDetail.close();
 
                 // Buat string yang berisi informasi transaksi beserta detailnya
-                String transaksi = "ID: " + idTransaksi + ", Tanggal: " + tanggal + ", Waktu: " + waktu + ", Total: " + total + "\nDetail: " + detailTransaksi.toString();
+                String transaksi = "ID: " + idTransaksi + "\n Tanggal: " + tanggal + "\nWaktu: " + waktu + "\nTotal: " + total + "\nDetail: " + detailTransaksi.toString() + "\nPembayaran: " + metodepembayaran;
                 transaksiList.add(transaksi);
             } while (cursorTransaksi.moveToNext());
         }
@@ -102,6 +104,19 @@ public class TransaksiActivity extends AppCompatActivity {
                 Intent Kembali = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(Kembali);
                 finish();
+            }
+        });
+        listTransaksi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String selectedTransaction = transaksiList.get(i); // Mendapatkan informasi transaksi yang dipilih
+                String[] parts = selectedTransaction.split("ID: "); // Pemisahan informasi untuk mendapatkan ID transaksi
+                if (parts.length > 1) {
+                    String transactionId = parts[1].split("\n")[0].trim(); // Mengambil ID transaksi dari string
+                    Intent intent = new Intent(TransaksiActivity.this, TransaksiDetail.class);
+                    intent.putExtra("TRANSAKSI_ID", transactionId);
+                    startActivity(intent);
+                }
             }
         });
     }
