@@ -145,9 +145,9 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
                 "FOREIGN KEY(idmenu) REFERENCES Menu(idmenu))";
         db.execSQL(createTableDetailTransaksi);
         db.execSQL("INSERT INTO DetailTransaksi(idtransaksi, idmenu, namamenu, harga, jumlah, subtotal, status) VALUES " +
-                "('WT120231201270001', 2, 'Menu B', 10.0, 3, 30.0, 'completed'), " +
-                "('WT120231201271002', 1, 'Menu A', 20.0, 1, 20.0, 'completed'), " +
-                "('WT120231201272003', 3, 'Menu C', 25.0, 2, 50.0, 'pending')");
+                "('WT120231201210001', 2, 'Menu B', 10.0, 3, 30.0, 'aktif'), " +
+                "('WT120231201211002', 1, 'Menu A', 20.0, 1, 20.0, 'aktif'), " +
+                "('WT120231201210003', 3, 'Menu C', 25.0, 2, 50.0, 'aktif')");
         // Tabel Pelanggan
         String createTablePelanggan = "CREATE TABLE Pelanggan (" +
                 "idpelanggan INTEGER PRIMARY KEY," +

@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
 
-        if (hourOfDay >= 11 && hourOfDay < 17) {
+        if (hourOfDay >= 10 && hourOfDay < 17) {
             shift = 0;
         } else if (hourOfDay >= 17 && hourOfDay < 23) {
             shift = 1;

@@ -50,24 +50,35 @@ public class TransaksiActivity extends AppCompatActivity {
                 String waktu = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("waktu"));
                 double total = cursorTransaksi.getDouble(cursorTransaksi.getColumnIndex("total"));
 
-                Cursor cursorDetail = dbHelper.getReadableDatabase().rawQuery("SELECT * FROM DetailTransaksi WHERE idtransaksi=?", new String[]{String.valueOf(idTransaksi)});
+                // Ambil informasi detail transaksi
+                Cursor cursorDetail = dbHelper.getReadableDatabase().rawQuery("SELECT * FROM DetailTransaksi WHERE idtransaksi=?", new String[]{idTransaksi});
                 StringBuilder detailTransaksi = new StringBuilder();
                 if (cursorDetail.moveToFirst()) {
                     do {
+                        // Ambil informasi detail transaksi
                         String namaMenu = cursorDetail.getString(cursorDetail.getColumnIndex("namamenu"));
                         int jumlah = cursorDetail.getInt(cursorDetail.getColumnIndex("jumlah"));
 
-                        detailTransaksi.append(namaMenu).append(" (").append(jumlah).append("), ");
+                        // Tambahkan informasi detail ke dalam StringBuilder
+                        detailTransaksi.append(namaMenu).append(" (").append(jumlah).append("x), ");
                     } while (cursorDetail.moveToNext());
                 }
                 cursorDetail.close();
 
-                String transaksi = "ID: " + idTransaksi + ", Waktu: " + waktu + ", Total: " + total + "\nDetail: " + detailTransaksi.toString();
+                // Buat string yang berisi informasi transaksi beserta detailnya
+                String transaksi = "ID \t\t\t\t: " + idTransaksi + "\nWaktu \t: " + waktu + "\nTotal \t\t: Rp." + total + "00";
+                if (detailTransaksi.length() > 0) {
+                    // Hapus koma dan spasi terakhir
+                    detailTransaksi.delete(detailTransaksi.length() - 2, detailTransaksi.length());
+                    transaksi += "\nDetail Pesanan : " + detailTransaksi.toString();
+                }
+
                 transaksiList.add(transaksi);
             } while (cursorTransaksi.moveToNext());
         }
         cursorTransaksi.close();
 
+        // Inisialisasi adapter untuk ListView
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, transaksiList);
         listTransaksi.setAdapter(adapter);
 
@@ -99,4 +110,3 @@ public class TransaksiActivity extends AppCompatActivity {
         });
     }
 }
-
