@@ -16,13 +16,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
 public class TransaksiDetail extends AppCompatActivity {
     private ListView listRekapPesanan;
-    private String statustransaksi,metodebayar;
+    private String statustransaksi, metodebayar;
     private TextView textStatus;
     private ArrayList<String> listpesanan;
-    private Button btnUbahStatus, btnSelesaikanPesanan,btnKembali_Transaksi,btnLogout;
-    private Spinner spinnerMetodePembayaran;
+    private Button btnUbahStatus, btnSelesaikanPesanan, btnKembali_Transaksi, btnLogout;
+    private Spinner spinnerMetodePembayaran, spinnerUbahStatus;
     private ArrayAdapter<String> adapter;
     private DataBaseHelperLogin dbHelper;
     public static final String SHARED_PREF_NAME = "myPref";
@@ -40,6 +41,7 @@ public class TransaksiDetail extends AppCompatActivity {
         btnUbahStatus = findViewById(R.id.btnUbahStatus);
         btnSelesaikanPesanan = findViewById(R.id.btnSelesaikanPesanan);
         spinnerMetodePembayaran = findViewById(R.id.spinnerMetodePembayaran);
+        spinnerUbahStatus = findViewById(R.id.spinnerUbahStatus);
         btnLogout = findViewById(R.id.btnLogout);
         btnKembali_Transaksi = findViewById(R.id.btnKembali_Transaksi);
 
@@ -47,89 +49,100 @@ public class TransaksiDetail extends AppCompatActivity {
         statustransaksi = new String();
         metodebayar = new String();
 
-        // Mendapatkan ID transaksi dari intent
-        Intent intent = getIntent();
+        String idtransaksi = getIntent().getStringExtra("idtransaksi");
 
-        if (intent != null && intent.hasExtra("TRANSAKSI_ID")) {
-            String selectedTransactionId = intent.getStringExtra("TRANSAKSI_ID");
-            Cursor cursorTransaksiDetail = dbHelper.getReadableDatabase().rawQuery("SELECT * FROM DetailTransaksi WHERE idtransaksi=?", new String[]{String.valueOf(selectedTransactionId)});
-            if (cursorTransaksiDetail != null) {
-                while (cursorTransaksiDetail.moveToNext()) {
-                    String namamenu = cursorTransaksiDetail.getString(cursorTransaksiDetail.getColumnIndex("namamenu"));
-                    String status = cursorTransaksiDetail.getString(cursorTransaksiDetail.getColumnIndex("status"));
+        // Mendapatkan data dari DetailTransaksi
+        Cursor cursorTransaksiDetail = dbHelper.getReadableDatabase().rawQuery("SELECT * FROM DetailTransaksi WHERE idtransaksi=?", new String[]{idtransaksi});
+        if (cursorTransaksiDetail != null) {
+            while (cursorTransaksiDetail.moveToNext()) {
+                String namamenu = cursorTransaksiDetail.getString(cursorTransaksiDetail.getColumnIndex("namamenu"));
+                String jumlah = cursorTransaksiDetail.getString(cursorTransaksiDetail.getColumnIndex("jumlah"));
 
-                    String menu = "menu: " + namamenu;
-                    listpesanan.add(menu);
-                    statustransaksi = status;
-                    textStatus.setText("Status: " + statustransaksi);
-                }
+                // Menambahkan data ke listpesanan
+                listpesanan.add("Menu \t\t\t\t\t\t: " + namamenu);
+                listpesanan.add("Jumlah \t\t\t\t\t: " + jumlah);
             }
-            Cursor cursorTransaksi = dbHelper.getReadableDatabase().rawQuery("SELECT * FROM Transaksi WHERE idtransaksi=?", new String[]{String.valueOf(selectedTransactionId)});
-            if (cursorTransaksi != null) {
-                while (cursorTransaksi.moveToNext()) {
-                    String status = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("status"));
-                    String metodepembayaran = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("metodepembayaran"));
-                    statustransaksi = status;
-                    metodebayar = metodepembayaran;
-                }
-            }
-            adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,listpesanan);
-            listRekapPesanan.setAdapter(adapter);
-
-            btnUbahStatus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Ganti status dari aktif menjadi batal, dan sebaliknya
-                    if (statustransaksi.equals("aktif")) {
-                        statustransaksi = "batal";
-                    } else if (statustransaksi.equals("batal")) {
-                        statustransaksi = "aktif";
-                    }
-
-                    // Update status yang terlihat pada TextView
-                    textStatus.setText("Status: " + statustransaksi);
-
-                    // Simpan perubahan status ke dalam database sesuai id transaksi
-                    // Misalkan, perubahan status disimpan dalam kolom 'status' di tabel DetailTransaksi
-                    dbHelper.updateTransactionStatus(selectedTransactionId, statustransaksi);
-
-                    // Tampilkan pesan bahwa status telah diubah
-                    Toast.makeText(TransaksiDetail.this, "Status diubah menjadi " + statustransaksi, Toast.LENGTH_SHORT).show();
-                }
-            });
-
-
-            // Contoh data untuk pilihan metode pembayaran
-            String[] metodePembayaran = {"cash","kartu debit","kartu kredit", "qris"};
-
-            // Inisialisasi adapter untuk spinner metode pembayaran
-            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, metodePembayaran);
-            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnerMetodePembayaran.setAdapter(spinnerAdapter);
-
-            btnSelesaikanPesanan.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Mendapatkan metode pembayaran yang dipilih dari spinner
-                    String metodePembayaranTerpilih = spinnerMetodePembayaran.getSelectedItem().toString();
-
-                    // Update metode pembayaran sesuai dengan yang dipilih pada transaksi yang terkait
-                    dbHelper.updateTransactionPaymentMethod(selectedTransactionId, metodePembayaranTerpilih);
-
-                    // Tampilkan pesan bahwa metode pembayaran telah diubah
-                    Toast.makeText(TransaksiDetail.this, "Pesanan selesai dengan metode pembayaran " + metodePembayaranTerpilih, Toast.LENGTH_SHORT).show();
-                    Intent Kembali = new Intent(getApplicationContext(), TransaksiActivity.class);
-                    startActivity(Kembali);
-                    finish();
-                }
-            });
         }
+
+        // Mendapatkan data dari Transaksi
+        Cursor cursorTransaksi = dbHelper.getReadableDatabase().rawQuery("SELECT * FROM Transaksi WHERE idtransaksi=?", new String[]{idtransaksi});
+        if (cursorTransaksi != null && cursorTransaksi.moveToFirst()) {
+            String idTransaksi = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("idtransaksi"));
+            double total = cursorTransaksi.getDouble(cursorTransaksi.getColumnIndex("total"));
+            String tanggaltransaksi = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("tanggal"));
+            String waktu = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("waktu"));
+            String status = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("status"));
+            String metodepembayaran = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("metodepembayaran"));
+
+            // Menambahkan data Transaksi ke listpesanan
+            listpesanan.add("ID Transaksi : " + idTransaksi);
+            listpesanan.add("Total \t\t\t\t\t\t\t: " + total);
+            listpesanan.add("Status \t\t\t\t\t\t : " + status);
+            listpesanan.add("Tanggal Transaksi : " + tanggaltransaksi + " " + waktu);
+            listpesanan.add("Metode Pembayaran : " + metodepembayaran);
+        }
+
+        // Set adapter untuk listRekapPesanan
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listpesanan);
+        listRekapPesanan.setAdapter(adapter);
+
+        // Inisialisasi adapter untuk spinner ubah status
+        String[] statusOptions = {"baru", "diproses", "disajikan", "selesai"};
+        ArrayAdapter<String> spinnerUbahStatusAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, statusOptions);
+        spinnerUbahStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerUbahStatus.setAdapter(spinnerUbahStatusAdapter);
+
+        // Inisialisasi adapter untuk spinner metode pembayaran
+        String[] metodePembayaran = {"cash", "kartu debit", "kartu kredit", "qris"};
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, metodePembayaran);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerMetodePembayaran.setAdapter(spinnerAdapter);
+
+        btnUbahStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Mendapatkan status yang dipilih dari spinner
+                String status = spinnerUbahStatus.getSelectedItem().toString();
+
+                // Update tatus sesuai dengan yang dipilih pada transaksi yang terkait
+                dbHelper.updateStatusTransaksi(idtransaksi, status);
+
+                // Tampilkan pesan bahwa metode pembayaran dan status telah diubah
+                Toast.makeText(TransaksiDetail.this, "Status pesanan diubah menjadi " + status, Toast.LENGTH_SHORT).show();
+
+                // Navigasi kembali ke aktivitas TransaksiActivity
+                Intent kembali = new Intent(getApplicationContext(), TransaksiActivity.class);
+                startActivity(kembali);
+                finish();
+            }
+        });
+
+        btnSelesaikanPesanan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Mendapatkan status dan metode pembayaran yang dipilih dari spinner
+                String status = spinnerUbahStatus.getSelectedItem().toString();
+                String metodePembayaran = spinnerMetodePembayaran.getSelectedItem().toString();
+
+                // Update metode pembayaran dan status sesuai dengan yang dipilih pada transaksi yang terkait
+                dbHelper.updateMetodePembayaranDanStatus(idtransaksi, metodePembayaran, status);
+
+                // Tampilkan pesan bahwa metode pembayaran dan status telah diubah
+                Toast.makeText(TransaksiDetail.this, "Pesanan selesai dengan metode pembayaran " + metodePembayaran +
+                        " dan status " + status, Toast.LENGTH_SHORT).show();
+
+                // Navigasi kembali ke aktivitas TransaksiActivity
+                Intent kembali = new Intent(getApplicationContext(), TransaksiActivity.class);
+                startActivity(kembali);
+                finish();
+            }
+        });
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Boolean updateSeesion = dbHelper.upgradeSession("kosong", 1);
-                if (updateSeesion == true){
+                Boolean updateSession = dbHelper.upgradeSession("kosong", 1);
+                if (updateSession) {
                     Toast.makeText(getApplicationContext(), "Berhasil Keluar", Toast.LENGTH_LONG).show();
 
                     SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -142,14 +155,14 @@ public class TransaksiDetail extends AppCompatActivity {
                 }
             }
         });
+
         btnKembali_Transaksi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent Kembali = new Intent(getApplicationContext(), TransaksiActivity.class);
-                startActivity(Kembali);
+                Intent kembali = new Intent(getApplicationContext(), TransaksiActivity.class);
+                startActivity(kembali);
                 finish();
             }
         });
-
     }
 }

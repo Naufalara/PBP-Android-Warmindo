@@ -47,17 +47,17 @@ public class TransaksiActivity extends AppCompatActivity {
 
         if (cursorTransaksi.moveToFirst()) {
             do {
-
                 // Ambil informasi transaksi
                 String idTransaksi = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("idtransaksi"));
                 String tanggaltransaksi = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("tanggal"));
                 String waktu = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("waktu"));
                 double total = cursorTransaksi.getDouble(cursorTransaksi.getColumnIndex("total"));
-                String metodepembayaran = cursorTransaksi.getString(cursorTransaksi.getColumnIndex("metodepembayaran"));
+
+                // Inisialisasi StringBuilder untuk setiap transaksi
+                StringBuilder detailTransaksi = new StringBuilder();
 
                 // Ambil informasi detail transaksi
                 Cursor cursorDetail = dbHelper.getReadableDatabase().rawQuery("SELECT * FROM DetailTransaksi WHERE idtransaksi=?", new String[]{idTransaksi});
-                StringBuilder detailTransaksi = new StringBuilder();
                 if (cursorDetail.moveToFirst()) {
                     do {
                         // Ambil informasi detail transaksi
@@ -71,16 +71,17 @@ public class TransaksiActivity extends AppCompatActivity {
                 cursorDetail.close();
 
                 // Buat string yang berisi informasi transaksi beserta detailnya
-                String transaksi = "ID \t\t\t\t: " + idTransaksi + "\nWaktu \t: " + waktu + "\nTotal \t\t: Rp." + total + "00";
+                String transaksi = "ID \t\t\t\t\t: " + idTransaksi + "\nTanggal \t: " + tanggaltransaksi + " " + waktu + "\nTotal \t\t\t: Rp." + total + "00";
                 if (detailTransaksi.length() > 0) {
                     // Hapus koma dan spasi terakhir
                     detailTransaksi.delete(detailTransaksi.length() - 2, detailTransaksi.length());
-                    transaksi += "\nDetail Pesanan : " + detailTransaksi.toString();
+                    transaksi += "\nMenu \t\t: " + detailTransaksi.toString();
                 }
                 transaksiList.add(transaksi);
             } while (cursorTransaksi.moveToNext());
         }
         cursorTransaksi.close();
+
 
         // Inisialisasi adapter untuk ListView
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, transaksiList);
@@ -116,11 +117,11 @@ public class TransaksiActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String selectedTransaction = transaksiList.get(i); // Mendapatkan informasi transaksi yang dipilih
-                String[] parts = selectedTransaction.split("ID \t\t\t\t: "); // Pemisahan informasi untuk mendapatkan ID transaksi
+                String[] parts = selectedTransaction.split("ID \t\t\t\t\t: "); // Pemisahan informasi untuk mendapatkan ID transaksi
                 if (parts.length > 1) {
                     String transactionId = parts[1].split("\n")[0].trim(); // Mengambil ID transaksi dari string
                     Intent intent = new Intent(TransaksiActivity.this, TransaksiDetail.class);
-                    intent.putExtra("TRANSAKSI_ID", transactionId);
+                    intent.putExtra("idtransaksi", transactionId);
                     startActivity(intent);
                 }
             }
