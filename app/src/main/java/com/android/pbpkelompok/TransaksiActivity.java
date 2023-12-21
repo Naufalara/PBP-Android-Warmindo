@@ -116,7 +116,7 @@ public class TransaksiActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String selectedTransaction = transaksiList.get(i); // Mendapatkan informasi transaksi yang dipilih
-                String[] parts = selectedTransaction.split("ID: "); // Pemisahan informasi untuk mendapatkan ID transaksi
+                String[] parts = selectedTransaction.split("ID \t\t\t\t: "); // Pemisahan informasi untuk mendapatkan ID transaksi
                 if (parts.length > 1) {
                     String transactionId = parts[1].split("\n")[0].trim(); // Mengambil ID transaksi dari string
                     Intent intent = new Intent(TransaksiActivity.this, TransaksiDetail.class);

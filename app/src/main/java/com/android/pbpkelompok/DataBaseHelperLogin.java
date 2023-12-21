@@ -128,9 +128,9 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
         db.execSQL(createTableTransaksi);
         db.execSQL("INSERT INTO Transaksi(idtransaksi, tanggal, waktu, shift, idpengguna, idpelanggan, status, kodemeja, " +
                 "namapelanggan, total, metodepembayaran, totaldiskon, idpromosi) VALUES " +
-                "('WT120231201270001', '2023-12-27', '12:00', 1, 'WT1202310X01', 1, 'aktif', 'A001', 'Pelanggan A', 50.0, 'cash', 5.0, 1), " +
-                "('WT120231201271002', '2023-12-27', '14:30', 2, 'WT1202310X02', 2, 'aktif', 'A002', 'Pelanggan B', 30.0, 'kartu debit', 0.0, null), " +
-                "('WT120231201272003', '2023-12-27', '11:45', 0, 'WT1202310X01', 3, 'batal', 'B001', 'Pelanggan C', 70.0, 'qris', 10.0, 2)");
+                "('WT120231201270001', '2023-12-21', '12:00', 1, 'WT1202310X01', 1, 'aktif', 'A001', 'Pelanggan A', 50.0, 'cash', 5.0, 1), " +
+                "('WT120231201271002', '2023-12-21', '14:30', 2, 'WT1202310X02', 2, 'aktif', 'A002', 'Pelanggan B', 30.0, 'kartu debit', 0.0, null), " +
+                "('WT120231201272003', '2023-12-21', '11:45', 0, 'WT1202310X01', 3, 'batal', 'B001', 'Pelanggan C', 70.0, 'qris', 10.0, 2)");
 
         // Tabel DetailTransaksi
         String createTableDetailTransaksi = "CREATE TABLE DetailTransaksi (" +
