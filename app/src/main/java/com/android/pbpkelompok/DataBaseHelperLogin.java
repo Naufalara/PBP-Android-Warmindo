@@ -20,7 +20,7 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE session (id integer PRIMARY KEY, login text)");
         String createTablePengguna = "CREATE TABLE Pengguna (" +
-                "idpengguna Text PRIMARY KEY," +
+                "idpengguna TEXT PRIMARY KEY," +
                 "username TEXT," +
                 "password TEXT," +
                 "namapengguna TEXT," +
@@ -30,9 +30,9 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
         db.execSQL(createTablePengguna);
         // Tabel Pengguna
         db.execSQL("INSERT INTO Pengguna(idpengguna, username, password, namapengguna, idrole, status, foto) VALUES " +
-                "('WT1202310X01', 'karyawan1', 'pass1', 'Karyawan Satu', 'E4', 'active', null), " +
-                "('WT1202310X02', 'karyawan2', 'pass2', 'Karyawan Dua', 'E4', 'active', null), " +
-                "('WT1202310X03', 'karyawan3', 'pass3', 'Karyawan Tiga', 'E4', 'inactive', null)");
+                "('WT1202310X01', 'karyawan1', 'pass1', 'Karyawan Satu', 'E4', 'aktif', null), " +
+                "('WT1202310X02', 'karyawan2', 'pass2', 'Karyawan Dua', 'E4', 'aktif', null), " +
+                "('WT1202310X03', 'karyawan3', 'pass3', 'Karyawan Tiga', 'E4', 'tidak', null)");
         // Tabel AktivitasPengguna
         String createTableAktivitasPengguna = "CREATE TABLE AktivitasPengguna (" +
                 "idaktivitas INTEGER PRIMARY KEY," +
@@ -244,9 +244,10 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
     }
 
     //input user
-    public boolean simpanUser(String username, String password, String namaPengguna, String idRole, String status, byte[] foto) {
+    public boolean simpanUser(String idpengguna, String username, String password, String namaPengguna, String idRole, String status, byte[] foto) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put("idpengguna", idpengguna);
         values.put("username", username);
         values.put("password", password);
         values.put("namapengguna", namaPengguna);
@@ -299,6 +300,44 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
 
         return pengguna;
     }
+
+    public String getWarungIdByName(String namaWarung) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String warungId = null;
+
+        String[] columns = {"idwarung"};
+        String selection = "namawarung=?";
+        String[] selectionArgs = {namaWarung};
+
+        Cursor cursor = db.query("Warung", columns, selection, selectionArgs, null, null, null);
+
+        if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+            warungId = cursor.getString(cursor.getColumnIndex("idwarung"));
+            cursor.close();
+        }
+
+        return warungId;
+    }
+
+    public String getRoleIdByName(String roleName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String roleId = null;
+
+        String[] columns = {"idrole"};
+        String selection = "LOWER(role)=?";
+        String[] selectionArgs = {roleName.toLowerCase()};
+
+        Cursor cursor = db.query("Role", columns, selection, selectionArgs, null, null, null);
+
+        if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+            roleId = cursor.getString(cursor.getColumnIndex("idrole"));
+            cursor.close();
+        }
+
+        return roleId;
+    }
+
+
     public boolean checkUsername(String username) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = null;
@@ -317,6 +356,7 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
             }
         }
     }
+
     public String getRoleNameById(String idRole) {
         SQLiteDatabase db = this.getReadableDatabase();
         String roleName = null;
@@ -327,13 +367,25 @@ public class DataBaseHelperLogin extends SQLiteOpenHelper {
 
         Cursor cursor = db.query("Role", columns, selection, selectionArgs, null, null, null);
 
-        if (cursor != null && cursor.moveToFirst()) {
+        if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
             roleName = cursor.getString(cursor.getColumnIndex("role"));
             cursor.close();
         }
 
         return roleName;
     }
+
+    public int getEmployeeCountWithPrefix(String prefix) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM Pengguna WHERE idpengguna LIKE ?", new String[]{prefix + "%"});
+        int count = 0;
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+        }
+        cursor.close();
+        return count;
+    }
+
 
 }
 

@@ -27,7 +27,7 @@
             android:layout_gravity="center"
             android:fontFamily="@font/poppinssemibold"
             android:textSize="28sp"
-            android:textStyle="bold"
+            android:textColor="@color/primary"
             android:gravity="center"/>
         <Button
             android:id="@+id/btnLogout"
@@ -43,7 +43,9 @@
         android:id="@+id/btnTambahTransaksi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tambah Transaksi" />
+        android:text="Tambah Transaksi"
+        android:backgroundTint="@color/primary"
+        android:textColor="@color/white"/>
 
     <!-- Daftar transaksi yang sudah dibuat -->
     <ListView

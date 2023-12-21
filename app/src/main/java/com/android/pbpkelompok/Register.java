@@ -2,6 +2,8 @@ package com.android.pbpkelompok;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +11,19 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Toast;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +32,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class Register extends BottomSheetDialogFragment {
 
+    private Spinner warungSpinner;
     private DataBaseHelperLogin db;
 
     public static final String TAG = "Register";
@@ -41,14 +55,20 @@ public class Register extends BottomSheetDialogFragment {
         EditText repassword = view.findViewById(R.id.etRepeatPassword);
         EditText fullName = view.findViewById(R.id.etFullName); // Added EditText for Full Name
         Spinner roleSpinner = view.findViewById(R.id.roleID); // Changed to Spinner
+        warungSpinner = view.findViewById(R.id.warungID);
         Button daftar = view.findViewById(R.id.btnRegister);
 
         db = new DataBaseHelperLogin(getActivity());
 
-        // Set up the adapter and options for the roleSpinner
+        // Pilihan roleSpinner
         ArrayAdapter<String> roleAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, new String[]{"Petugas Dapur"});
         roleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         roleSpinner.setAdapter(roleAdapter);
+
+        // Pilihan warungSpinner
+        ArrayAdapter<String> warungAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, new String[]{"Warung A", "Warung B", "Warung C", "Warung D", "Warung E"});
+        warungAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        warungSpinner.setAdapter(warungAdapter);
 
         daftar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +77,7 @@ public class Register extends BottomSheetDialogFragment {
                 String inPassword = password.getText().toString();
                 String inRePassword = repassword.getText().toString();
                 String inFullName = fullName.getText().toString();
-                String inRoleID = getRoleIDFromSpinner(roleSpinner.getSelectedItem().toString());
+                String inRoleID = db.getRoleIdByName(roleSpinner.getSelectedItem().toString());
                 String inStatus = "aktif";
 
                 // Validasi input
@@ -78,7 +98,7 @@ public class Register extends BottomSheetDialogFragment {
                 }
 
                 // Updated method call to include Full Name, Role ID, and Status parameters
-                Boolean daftarSuccess = db.simpanUser(inUsername, inPassword, inFullName, inRoleID, inStatus, null);
+                Boolean daftarSuccess = daftar(inUsername, inPassword, inFullName, inRoleID, inStatus, null);
                 if (daftarSuccess) {
                     Toast.makeText(getActivity(), "Daftar Berhasil", Toast.LENGTH_LONG).show();
                 } else {
@@ -89,13 +109,31 @@ public class Register extends BottomSheetDialogFragment {
         });
     }
 
-    private String getRoleIDFromSpinner(String role) {
-        switch (role) {
-            case "Petugas Dapur":
-                return "E4";
-            default:
-                return "";
-        }
+    private Boolean daftar(String username, String password, String namaPengguna, String idRole, String status, byte[] foto) {
+
+        // Get formatted date
+        String formattedDate = getFormattedDate();
+
+        // Get selected warungID from Spinner
+        String selectedWarung = db.getWarungIdByName(warungSpinner.getSelectedItem().toString());
+
+        // Combine warungID, formatted date, and "X" to create the initial idpengguna
+        String initialIdpengguna = selectedWarung + formattedDate + "X";
+
+        // Get the number of employees with idpengguna starting with initialIdpengguna
+        int employeeCount = db.getEmployeeCountWithPrefix(initialIdpengguna);
+
+        // Create the final idpengguna by appending "X" and the employee count
+        String finalIdpengguna = initialIdpengguna + String.format("%02d", employeeCount + 1);
+
+        // Updated method call to include idpengguna parameter
+        return db.simpanUser(finalIdpengguna, username, password, namaPengguna, idRole, status, foto);
+    }
+
+    private String getFormattedDate() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMM", Locale.getDefault());
+        return dateFormat.format(calendar.getTime());
     }
 
     private boolean checkUsername(String username) {
